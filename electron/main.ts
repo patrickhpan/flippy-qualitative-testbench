@@ -3,6 +3,7 @@ import * as path from "path"
 import * as url from "url"
 import "core-js/stable"
 import "regenerator-runtime/runtime"
+import * as remoteMain from '@electron/remote/main';
 
 let mainWindow: Electron.BrowserWindow | null
 
@@ -13,13 +14,17 @@ function createWindow() {
     width: 1280,
     height: 720,
     webPreferences: {
-      enableRemoteModule: true,
       nodeIntegration: true,
       webSecurity: false,
+      contextIsolation: false, // THIS IS A POTENTIAL SECURITY VULNERABILITY -- FIX 
     },
     title: "Flippy Qualitative Testbench",
     icon,
   })
+
+  remoteMain.initialize();
+  remoteMain.enable(mainWindow.webContents);
+
   mainWindow.setMenuBarVisibility(false)
 
   if (process.env.NODE_ENV === "development") {

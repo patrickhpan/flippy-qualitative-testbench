@@ -1,6 +1,6 @@
 import React from "react"
 import { PageHeader, Button } from "antd"
-import { remote, shell } from "electron"
+import { dialog, shell } from "@electron/remote"
 import { initialPlayerState, PlayerState } from "../AppLayout/AppLayout"
 
 interface Props {
@@ -13,7 +13,7 @@ const Navbar = (props: Props) => {
   const { sheetFile, ready, started } = playerState
 
   const openFile = async () => {
-    const fileName = await remote.dialog.showOpenDialog({
+    const fileName = await dialog.showOpenDialog({
       title: `Open MusicXML file`,
       properties: [`openFile`],
       filters: [

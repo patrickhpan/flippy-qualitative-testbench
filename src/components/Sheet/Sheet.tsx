@@ -45,7 +45,10 @@ const Sheet = (props: Props) => {
       const osmd = new OSMD(divRef.current as HTMLElement, {
         followCursor: true,
       })
-      await osmd.load(sheetFile)
+
+      const localSheetFile = "file://" + sheetFile;
+
+      await osmd.load(localSheetFile)
       osmd.render()
       const cProc = new CursorProcessor(osmd.cursor, osmd.Sheet)
       setPlayerState({
