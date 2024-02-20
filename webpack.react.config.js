@@ -42,12 +42,16 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: path.join(__dirname, "../dist/renderer"),
     historyApiFallback: true,
     compress: true,
     hot: true,
     port: 4000,
-    publicPath: "/",
+    devMiddleware: {
+      publicPath: "/",
+    },
+    static: {
+      directory: path.join(__dirname, "../dist/renderer"),
+    }
   },
   output: {
     path: path.resolve(__dirname, "dist"),
