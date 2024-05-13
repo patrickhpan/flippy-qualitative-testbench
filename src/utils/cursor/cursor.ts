@@ -112,6 +112,10 @@ export class CursorProcessor {
 
     while (!this.cursor.Iterator.EndReached) {
       const currEntries = this.cursor.Iterator.CurrentVoiceEntries
+      const isAllRests = currEntries.every(entry => entry.Notes.every(note => note.isRest()))
+      if (isAllRests) {
+        console.log("All rests at measure", this.cursor.Iterator.CurrentMeasure.MeasureNumber, "beat", this.cursor.Iterator.currentTimeStamp.Numerator);
+      }
       const unadjustedTimestamp = getTimestampFromVoiceEntries(currEntries)
       if (unadjustedTimestamp !== undefined) {
         unadjustedCursorTimings.push({
