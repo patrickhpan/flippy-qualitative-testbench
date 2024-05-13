@@ -114,16 +114,21 @@ export class CursorProcessor {
       const currEntries = this.cursor.Iterator.CurrentVoiceEntries
       const isAllRests = currEntries.every(entry => entry.Notes.every(note => note.isRest()))
       if (isAllRests) {
+        // Just for testing purposes
         console.log("All rests at measure", this.cursor.Iterator.CurrentMeasure.MeasureNumber, "beat", this.cursor.Iterator.currentTimeStamp.Numerator);
+        continue;
       }
-      const unadjustedTimestamp = getTimestampFromVoiceEntries(currEntries)
-      if (unadjustedTimestamp !== undefined) {
-        unadjustedCursorTimings.push({
-          stepNumber: step,
-          timestamp: unadjustedTimestamp,
-        })
+      if (!isAllRests) {
+        // Skip doing this if everything at current cursor is a rest
+        const unadjustedTimestamp = getTimestampFromVoiceEntries(currEntries)
+        if (unadjustedTimestamp !== undefined) {
+          unadjustedCursorTimings.push({
+            stepNumber: step,
+            timestamp: unadjustedTimestamp,
+          })
+        }
       }
-      step++
+      step++ // not too sure if we should increment this ALWAYS or ONLY IF there were non-rests
       this.cursor.next()
     }
 
